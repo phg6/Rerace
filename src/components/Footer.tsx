@@ -28,7 +28,10 @@ const columns: { title: string; links: { href: string; label: string }[] }[] = [
   },
   {
     title: "Series",
-    links: SERIES_LIST.slice(0, 6).map((s) => ({ href: `/series/${s.key}`, label: s.name })),
+    links: SERIES_LIST.slice(0, 6).map((s) => ({
+      href: `/series/${s.key}`,
+      label: s.name,
+    })),
   },
   {
     title: "Company",
@@ -50,12 +53,14 @@ export function Footer() {
           <div>
             <Logo className="text-2xl" />
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-zinc-400">
-              The exclusive worldwide online motorsport broadcaster. Every race, every series, one
-              place.
+              The exclusive worldwide online motorsport broadcaster. Every race,
+              every series, one place.
             </p>
             <SocialIcons className="mt-5" />
             <div className="mt-6">
-              <p className="mb-2 text-sm font-semibold text-white">Race weekend newsletter</p>
+              <p className="mb-2 text-sm font-semibold text-white">
+                Race weekend newsletter
+              </p>
               <NewsletterForm />
             </div>
           </div>
@@ -65,7 +70,10 @@ export function Footer() {
               <ul className="space-y-2.5">
                 {col.links.map((l) => (
                   <li key={l.href}>
-                    <Link href={l.href} className="text-sm text-zinc-400 transition-colors hover:text-white">
+                    <Link
+                      href={l.href}
+                      className="text-sm text-zinc-400 transition-colors hover:text-white"
+                    >
                       {l.label}
                     </Link>
                   </li>
@@ -75,16 +83,7 @@ export function Footer() {
           ))}
         </div>
         <div className="mt-12 border-t border-white/[0.06] pt-6 text-xs leading-relaxed text-zinc-500">
-          <p>
-            © {new Date().getFullYear()} Rerace. All rights reserved. Rerace is an independent
-            platform and is not affiliated with, endorsed by, or associated with Formula 1, FIA,
-            MotoGP, NASCAR, IndyCar, WRC, Porsche, or any other championship, team, or rights
-            holder. All trademarks belong to their respective owners.{" "}
-            <Link href="/disclaimer" className="underline decoration-zinc-600 underline-offset-2 hover:text-zinc-300">
-              Read the full disclaimer
-            </Link>
-            .
-          </p>
+          <p>© {new Date().getFullYear()} Rerace. All rights reserved.</p>
         </div>
       </div>
     </footer>
