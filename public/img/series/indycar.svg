@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice">
+<defs>
+<radialGradient id="g1" cx="78%" cy="22%" r="95%">
+<stop offset="0%" stop-color="#0066cc" stop-opacity="0.34"/>
+<stop offset="46%" stop-color="#0066cc" stop-opacity="0.10"/>
+<stop offset="100%" stop-color="#0a0a0b" stop-opacity="0"/>
+</radialGradient>
+<linearGradient id="g2" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#141417"/>
+<stop offset="100%" stop-color="#0a0a0b"/>
+</linearGradient>
+<linearGradient id="sweep" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0%" stop-color="#0066cc" stop-opacity="0"/>
+<stop offset="55%" stop-color="#0066cc" stop-opacity="0.85"/>
+<stop offset="100%" stop-color="#0066cc" stop-opacity="0"/>
+</linearGradient>
+</defs>
+<rect width="1280" height="720" fill="url(#g2)"/>
+<rect width="1280" height="720" fill="url(#g1)"/>
+<rect x="-25" y="190" width="714" height="6.6" rx="3.3" fill="#0066cc" opacity="0.15" transform="rotate(-13.2 -25 190)"/><rect x="-81" y="529" width="898" height="8.9" rx="4.4" fill="#0066cc" opacity="0.24" transform="rotate(-14.8 -81 529)"/><rect x="192" y="506" width="719" height="4.9" rx="2.5" fill="#0066cc" opacity="0.13" transform="rotate(-15.6 192 506)"/><rect x="-39" y="335" width="444" height="4.0" rx="2.0" fill="#0066cc" opacity="0.22" transform="rotate(-14.2 -39 335)"/><rect x="392" y="230" width="339" height="8.4" rx="4.2" fill="#0066cc" opacity="0.30" transform="rotate(-13.3 392 230)"/><rect x="151" y="403" width="672" height="6.6" rx="3.3" fill="#0066cc" opacity="0.18" transform="rotate(-15.6 151 403)"/><rect x="-94" y="427" width="908" height="7.8" rx="3.9" fill="#0066cc" opacity="0.25" transform="rotate(-15.6 -94 427)"/><rect x="323" y="517" width="514" height="7.4" rx="3.7" fill="#0066cc" opacity="0.33" transform="rotate(-12.2 323 517)"/><rect x="68" y="246" width="557" height="7.7" rx="3.9" fill="#0066cc" opacity="0.20" transform="rotate(-15.9 68 246)"/><rect x="309" y="466" width="504" height="4.1" rx="2.0" fill="#0066cc" opacity="0.27" transform="rotate(-13.4 309 466)"/><rect x="212" y="112" width="622" height="5.8" rx="2.9" fill="#0066cc" opacity="0.33" transform="rotate(-15.4 212 112)"/><rect x="-57" y="676" width="376" height="8.2" rx="4.1" fill="#0066cc" opacity="0.19" transform="rotate(-12.5 -57 676)"/><rect x="170" y="452" width="834" height="6.7" rx="3.4" fill="#0066cc" opacity="0.25" transform="rotate(-15.4 170 452)"/><rect x="59" y="293" width="663" height="3.6" rx="1.8" fill="#0066cc" opacity="0.31" transform="rotate(-14.9 59 293)"/>
+<circle cx="745" cy="543" r="3.5" fill="#ffffff" opacity="0.45"/><circle cx="492" cy="458" r="2.6" fill="#ffffff" opacity="0.17"/><circle cx="76" cy="698" r="2.7" fill="#ffffff" opacity="0.31"/><circle cx="761" cy="670" r="2.5" fill="#ffffff" opacity="0.43"/><circle cx="919" cy="229" r="1.3" fill="#ffffff" opacity="0.24"/><circle cx="582" cy="568" r="1.6" fill="#ffffff" opacity="0.22"/><circle cx="446" cy="530" r="1.9" fill="#ffffff" opacity="0.17"/><circle cx="446" cy="614" r="3.1" fill="#ffffff" opacity="0.28"/><circle cx="472" cy="250" r="2.4" fill="#ffffff" opacity="0.21"/><circle cx="652" cy="603" r="3.9" fill="#ffffff" opacity="0.35"/>
+<rect x="0" y="600" width="1280" height="4" fill="url(#sweep)" transform="rotate(-14 640 602)"/>
+<text x="64" y="648" font-family="'Zen Dots', sans-serif" font-size="58" letter-spacing="14" fill="#ffffff" opacity="0.16" style="text-transform:uppercase">INDYCAR</text>
+</svg>

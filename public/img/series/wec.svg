@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice">
+<defs>
+<radialGradient id="g1" cx="78%" cy="22%" r="95%">
+<stop offset="0%" stop-color="#00a19a" stop-opacity="0.34"/>
+<stop offset="46%" stop-color="#00a19a" stop-opacity="0.10"/>
+<stop offset="100%" stop-color="#0a0a0b" stop-opacity="0"/>
+</radialGradient>
+<linearGradient id="g2" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#141417"/>
+<stop offset="100%" stop-color="#0a0a0b"/>
+</linearGradient>
+<linearGradient id="sweep" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0%" stop-color="#00a19a" stop-opacity="0"/>
+<stop offset="55%" stop-color="#00a19a" stop-opacity="0.85"/>
+<stop offset="100%" stop-color="#00a19a" stop-opacity="0"/>
+</linearGradient>
+</defs>
+<rect width="1280" height="720" fill="url(#g2)"/>
+<rect width="1280" height="720" fill="url(#g1)"/>
+<rect x="8" y="174" width="961" height="7.9" rx="3.9" fill="#00a19a" opacity="0.14" transform="rotate(-13.2 8 174)"/><rect x="351" y="585" width="910" height="6.7" rx="3.3" fill="#00a19a" opacity="0.19" transform="rotate(-13.2 351 585)"/><rect x="79" y="492" width="851" height="4.7" rx="2.3" fill="#00a19a" opacity="0.06" transform="rotate(-14.5 79 492)"/><rect x="358" y="109" width="251" height="4.1" rx="2.1" fill="#00a19a" opacity="0.17" transform="rotate(-15.8 358 109)"/><rect x="354" y="289" width="977" height="7.4" rx="3.7" fill="#00a19a" opacity="0.31" transform="rotate(-15.9 354 289)"/><rect x="235" y="605" width="895" height="2.9" rx="1.4" fill="#00a19a" opacity="0.28" transform="rotate(-13.3 235 605)"/><rect x="166" y="631" width="273" height="6.8" rx="3.4" fill="#00a19a" opacity="0.18" transform="rotate(-14.8 166 631)"/><rect x="315" y="580" width="977" height="7.6" rx="3.8" fill="#00a19a" opacity="0.11" transform="rotate(-15.0 315 580)"/><rect x="348" y="665" width="874" height="7.5" rx="3.8" fill="#00a19a" opacity="0.17" transform="rotate(-12.5 348 665)"/><rect x="-68" y="459" width="1029" height="8.9" rx="4.5" fill="#00a19a" opacity="0.16" transform="rotate(-14.1 -68 459)"/><rect x="234" y="177" width="911" height="7.2" rx="3.6" fill="#00a19a" opacity="0.18" transform="rotate(-14.3 234 177)"/><rect x="-80" y="671" width="785" height="4.6" rx="2.3" fill="#00a19a" opacity="0.33" transform="rotate(-16.0 -80 671)"/><rect x="157" y="234" width="919" height="3.5" rx="1.7" fill="#00a19a" opacity="0.11" transform="rotate(-13.7 157 234)"/><rect x="112" y="361" width="778" height="6.2" rx="3.1" fill="#00a19a" opacity="0.22" transform="rotate(-14.1 112 361)"/>
+<circle cx="1168" cy="73" r="2.4" fill="#ffffff" opacity="0.45"/><circle cx="505" cy="33" r="3.6" fill="#ffffff" opacity="0.45"/><circle cx="786" cy="248" r="3.9" fill="#ffffff" opacity="0.34"/><circle cx="903" cy="69" r="2.2" fill="#ffffff" opacity="0.25"/><circle cx="842" cy="340" r="3.3" fill="#ffffff" opacity="0.13"/><circle cx="253" cy="199" r="3.3" fill="#ffffff" opacity="0.10"/><circle cx="450" cy="118" r="1.9" fill="#ffffff" opacity="0.26"/><circle cx="846" cy="380" r="3.5" fill="#ffffff" opacity="0.37"/><circle cx="100" cy="44" r="2.9" fill="#ffffff" opacity="0.25"/><circle cx="659" cy="700" r="3.5" fill="#ffffff" opacity="0.34"/>
+<rect x="0" y="600" width="1280" height="4" fill="url(#sweep)" transform="rotate(-14 640 602)"/>
+<text x="64" y="648" font-family="'Zen Dots', sans-serif" font-size="58" letter-spacing="14" fill="#ffffff" opacity="0.16" style="text-transform:uppercase">WEC</text>
+</svg>

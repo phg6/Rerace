@@ -1,5 +1,5 @@
 {
-  "name": "rerace-tmp",
+  "name": "rerace",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,9 +9,25 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@payloadcms/db-postgres": "^3.85.1",
+    "@payloadcms/next": "^3.85.1",
+    "@payloadcms/richtext-lexical": "^3.85.1",
+    "@supabase/ssr": "^0.12.0",
+    "@supabase/supabase-js": "^2.108.1",
+    "@types/web-push": "^3.6.4",
+    "date-fns": "^4.4.0",
+    "graphql": "^16.14.2",
+    "hls.js": "^1.6.16",
+    "lucide-react": "^1.17.0",
     "next": "16.2.9",
+    "payload": "^3.85.1",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "resend": "^6.12.4",
+    "rss-parser": "^3.13.0",
+    "sharp": "^0.35.1",
+    "web-push": "^3.6.7",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -22,5 +38,6 @@
     "eslint-config-next": "16.2.9",
     "tailwindcss": "^4",
     "typescript": "^5"
-  }
+  },
+  "type": "module"
 }

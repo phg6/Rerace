@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice">
+<defs>
+<radialGradient id="g1" cx="78%" cy="22%" r="95%">
+<stop offset="0%" stop-color="#ffd659" stop-opacity="0.34"/>
+<stop offset="46%" stop-color="#ffd659" stop-opacity="0.10"/>
+<stop offset="100%" stop-color="#0a0a0b" stop-opacity="0"/>
+</radialGradient>
+<linearGradient id="g2" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#141417"/>
+<stop offset="100%" stop-color="#0a0a0b"/>
+</linearGradient>
+<linearGradient id="sweep" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0%" stop-color="#ffd659" stop-opacity="0"/>
+<stop offset="55%" stop-color="#ffd659" stop-opacity="0.85"/>
+<stop offset="100%" stop-color="#ffd659" stop-opacity="0"/>
+</linearGradient>
+</defs>
+<rect width="1280" height="720" fill="url(#g2)"/>
+<rect width="1280" height="720" fill="url(#g1)"/>
+<rect x="328" y="481" width="962" height="3.0" rx="1.5" fill="#ffd659" opacity="0.19" transform="rotate(-14.0 328 481)"/><rect x="277" y="328" width="442" height="2.2" rx="1.1" fill="#ffd659" opacity="0.08" transform="rotate(-13.9 277 328)"/><rect x="388" y="240" width="893" height="6.9" rx="3.4" fill="#ffd659" opacity="0.28" transform="rotate(-14.2 388 240)"/><rect x="328" y="431" width="981" height="5.3" rx="2.6" fill="#ffd659" opacity="0.26" transform="rotate(-13.6 328 431)"/><rect x="263" y="473" width="972" height="6.7" rx="3.3" fill="#ffd659" opacity="0.15" transform="rotate(-14.9 263 473)"/><rect x="361" y="581" width="334" height="6.4" rx="3.2" fill="#ffd659" opacity="0.33" transform="rotate(-12.7 361 581)"/><rect x="287" y="327" width="933" height="6.9" rx="3.5" fill="#ffd659" opacity="0.31" transform="rotate(-13.6 287 327)"/><rect x="208" y="565" width="636" height="3.5" rx="1.7" fill="#ffd659" opacity="0.19" transform="rotate(-12.3 208 565)"/><rect x="292" y="229" width="509" height="5.4" rx="2.7" fill="#ffd659" opacity="0.06" transform="rotate(-15.5 292 229)"/><rect x="204" y="171" width="819" height="8.0" rx="4.0" fill="#ffd659" opacity="0.33" transform="rotate(-13.9 204 171)"/><rect x="111" y="604" width="1032" height="6.7" rx="3.4" fill="#ffd659" opacity="0.20" transform="rotate(-14.1 111 604)"/><rect x="181" y="463" width="617" height="3.8" rx="1.9" fill="#ffd659" opacity="0.06" transform="rotate(-14.7 181 463)"/><rect x="79" y="601" width="638" height="8.6" rx="4.3" fill="#ffd659" opacity="0.33" transform="rotate(-14.5 79 601)"/><rect x="-27" y="590" width="562" height="2.4" rx="1.2" fill="#ffd659" opacity="0.19" transform="rotate(-12.1 -27 590)"/>
+<circle cx="1209" cy="185" r="2.5" fill="#ffffff" opacity="0.48"/><circle cx="1248" cy="317" r="2.4" fill="#ffffff" opacity="0.11"/><circle cx="224" cy="669" r="3.5" fill="#ffffff" opacity="0.15"/><circle cx="964" cy="565" r="3.2" fill="#ffffff" opacity="0.24"/><circle cx="419" cy="262" r="1.4" fill="#ffffff" opacity="0.45"/><circle cx="611" cy="392" r="3.5" fill="#ffffff" opacity="0.29"/><circle cx="1241" cy="438" r="3.3" fill="#ffffff" opacity="0.43"/><circle cx="822" cy="580" r="2.7" fill="#ffffff" opacity="0.24"/><circle cx="1236" cy="407" r="1.4" fill="#ffffff" opacity="0.37"/><circle cx="333" cy="285" r="2.1" fill="#ffffff" opacity="0.13"/>
+<rect x="0" y="600" width="1280" height="4" fill="url(#sweep)" transform="rotate(-14 640 602)"/>
+<text x="64" y="648" font-family="'Zen Dots', sans-serif" font-size="58" letter-spacing="14" fill="#ffffff" opacity="0.16" style="text-transform:uppercase">NASCAR</text>
+</svg>
