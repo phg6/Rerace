@@ -16,12 +16,12 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <div className="container-site py-12 sm:py-16">
+    <div className="container-site pb-20 pt-10">
       <div className="mx-auto max-w-3xl animate-rise">
         <header>
-          <SectionLabel className="mb-3">Get in touch</SectionLabel>
-          <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl">Contact</h1>
-          <p className="mt-4 text-sm leading-relaxed text-zinc-400 sm:text-base">
+          <SectionLabel className="mb-2">Get in touch</SectionLabel>
+          <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">Contact</h1>
+          <p className="mt-2 text-sm leading-relaxed text-zinc-400">
             Whether you&rsquo;re media, a potential partner, a rights holder with a takedown request, or just need
             support — drop us a line below. Rights-holder requests are reviewed and acted on promptly once verified.
           </p>

@@ -1,0 +1,140 @@
+/* ============================================================
+   Rerace admin theme — make Payload feel like part of rerace.net
+   Loaded after @payloadcms/next/css so these overrides win.
+   ============================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap");
+
+:root {
+  --rerace-red: #e10600;
+  --rerace-red-bright: #ff2d23;
+  --rerace-red-dim: rgba(225, 6, 0, 0.16);
+
+  /* Very-rounded like the site (Payload defaults are 3 / 4 / 8px) */
+  --style-radius-s: 8px;
+  --style-radius-m: 12px;
+  --style-radius-l: 16px;
+}
+
+/* ----- Dark palette: repaint Payload's near-black surfaces to ours -----
+   In dark mode Payload derives elevation-0..150 (bg, cards, inputs, borders)
+   from base-900..750, so retinting those four cascades everywhere. */
+html[data-theme="dark"] {
+  --color-base-900: rgb(10, 10, 11); /* #0a0a0b — page background  */
+  --color-base-850: rgb(18, 18, 22); /* cards / inputs            */
+  --color-base-800: rgb(24, 24, 30); /* raised surfaces / menus   */
+  --color-base-750: rgb(40, 40, 47); /* hairline borders          */
+}
+
+/* Cinematic login: subtle red glow on the near-black field */
+.template-minimal,
+.login__wrap,
+.login {
+  background:
+    radial-gradient(60% 50% at 50% 0%, rgba(225, 6, 0, 0.12), transparent 70%),
+    var(--theme-bg);
+}
+
+/* ----- Brand graphics (Logo on login, Icon in the nav) ----- */
+.rerace-brand {
+  font-family: "Zen Dots", var(--font-zen), ui-sans-serif, sans-serif;
+  color: #fff;
+  user-select: none;
+  line-height: 1;
+}
+
+.rerace-brand--logo {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.rerace-brand__mark {
+  font-size: 2rem;
+  letter-spacing: 0.06em;
+}
+
+.rerace-brand__label {
+  font-family: var(--font-body, inherit);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--rerace-red-bright);
+}
+
+.rerace-brand--icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-size: 1.05rem;
+  letter-spacing: 0;
+  border-radius: 9px;
+  background: linear-gradient(135deg, var(--rerace-red), #8c0400);
+  box-shadow: 0 0 18px -4px rgba(225, 6, 0, 0.7);
+}
+
+.rerace-login-note {
+  margin: 0 0 1.25rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--theme-elevation-600);
+}
+
+/* ----- Racing-red accents ----- */
+
+/* Primary buttons (Save, Create New, Publish…) */
+.btn--style-primary {
+  --bg-color: var(--rerace-red);
+  --color: #fff;
+  --hover-bg: var(--rerace-red-bright);
+  --hover-color: #fff;
+}
+
+/* Active nav item gets a red marker + tint */
+.nav__link--active,
+.nav-group__toggle--active {
+  color: #fff;
+  box-shadow: inset 2px 0 0 0 var(--rerace-red);
+  background: var(--rerace-red-dim);
+}
+
+/* Checkboxes / radios when checked */
+.checkbox-input__input:checked + .checkbox-input__icon,
+.checkbox-input--checked .checkbox-input__icon {
+  background: var(--rerace-red);
+  border-color: var(--rerace-red);
+}
+
+/* React-select focused option + multi-value chips */
+.rs__option--is-focused {
+  background: var(--rerace-red-dim) !important;
+}
+.rs__multi-value {
+  background: var(--rerace-red-dim) !important;
+}
+
+/* Pills (statuses, version badges) */
+.pill--style-light.pill--color-success {
+  background: var(--rerace-red-dim);
+  color: var(--rerace-red-bright);
+}
+
+/* Focus ring + text selection in Rerace red */
+:where(button, a, input, textarea, select, [tabindex]):focus-visible {
+  outline: 2px solid var(--rerace-red);
+  outline-offset: 1px;
+}
+::selection {
+  background: var(--rerace-red);
+  color: #fff;
+}
+
+/* Loading shimmer / progress bar tint */
+.loading-overlay__bars span,
+.doc-controls__indicator {
+  background: var(--rerace-red);
+}

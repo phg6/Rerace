@@ -5,6 +5,7 @@ import { eventStatus, eventStart, nextSession } from "@/lib/utils";
 import { seriesMeta } from "@/lib/series";
 import { MediaRow, RowItem } from "@/components/MediaRow";
 import { MediaCard } from "@/components/MediaCard";
+import { TiltCard } from "@/components/TiltCard";
 import { LivePill, LiveBar } from "@/components/LiveBadge";
 import { SeriesTag } from "@/components/SeriesTag";
 import { SectionLabel, SectionHeading } from "@/components/SectionLabel";
@@ -127,22 +128,29 @@ export default async function HomePage() {
           {upcoming.slice(0, 4).map((e) => {
             const next = nextSession(e);
             return (
-              <Link key={e.id} href={`/watch/${e.id}`} className="glass group flex min-w-0 items-center gap-4 p-4 transition-all hover:border-race/50 hover:shadow-glow-red">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={e.image || seriesMeta(e.series).poster}
-                  alt=""
-                  className="h-16 w-24 shrink-0 rounded-xl object-cover"
-                />
-                <div className="min-w-0">
-                  <SeriesTag series={e.series} className="mb-1.5" />
-                  <p className="truncate text-sm font-semibold text-white">{e.title}</p>
-                  {next && (
-                    <p className="text-xs text-zinc-400">
-                      {next.name} · <LocalTime iso={next.startsAt} mode="relative" className="text-race-bright" />
-                    </p>
-                  )}
-                </div>
+              <Link
+                key={e.id}
+                href={`/watch/${e.id}`}
+                className="block h-full rounded-card focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-race"
+              >
+                <TiltCard maxTilt={5} className="flex h-full min-w-0 items-center gap-4 p-4">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={e.image || seriesMeta(e.series).poster}
+                    alt=""
+                    loading="lazy"
+                    className="h-16 w-24 shrink-0 rounded-xl object-cover"
+                  />
+                  <div className="min-w-0">
+                    <SeriesTag series={e.series} className="mb-1.5" />
+                    <p className="truncate text-sm font-semibold text-white">{e.title}</p>
+                    {next && (
+                      <p className="truncate text-xs text-zinc-400">
+                        {next.name} · <LocalTime iso={next.startsAt} mode="relative" className="text-race-bright" />
+                      </p>
+                    )}
+                  </div>
+                </TiltCard>
               </Link>
             );
           })}
@@ -255,29 +263,32 @@ export default async function HomePage() {
                 key={n.id}
                 href={n.url}
                 target={n.isOriginal ? undefined : "_blank"}
-                className="glass group flex items-center gap-4 p-3 transition-all hover:border-race/50"
+                className="block rounded-card focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-race"
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={n.image || seriesMeta(n.series).poster}
-                  alt=""
-                  className="h-16 w-28 shrink-0 rounded-xl object-cover"
-                />
-                <div className="min-w-0">
-                  <p className="line-clamp-2 text-sm font-semibold leading-snug text-white group-hover:text-race-bright">
-                    {n.title}
-                  </p>
-                  <p className="mt-1 text-xs text-zinc-500">
-                    {n.isOriginal ? (
-                      <span className="font-display mr-1 text-[10px] uppercase tracking-widest text-race-bright">
-                        Rerace
-                      </span>
-                    ) : (
-                      `${n.source} · `
-                    )}
-                    <LocalTime iso={n.publishedAt} mode="relative" />
-                  </p>
-                </div>
+                <TiltCard maxTilt={4} className="flex items-center gap-4 p-3">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={n.image || seriesMeta(n.series).poster}
+                    alt=""
+                    loading="lazy"
+                    className="h-16 w-28 shrink-0 rounded-xl object-cover"
+                  />
+                  <div className="min-w-0">
+                    <p className="line-clamp-2 text-sm font-semibold leading-snug text-white group-hover:text-race-bright">
+                      {n.title}
+                    </p>
+                    <p className="mt-1 text-xs text-zinc-500">
+                      {n.isOriginal ? (
+                        <span className="font-display mr-1 text-[10px] uppercase tracking-widest text-race-bright">
+                          Rerace
+                        </span>
+                      ) : (
+                        `${n.source} · `
+                      )}
+                      <LocalTime iso={n.publishedAt} mode="relative" />
+                    </p>
+                  </div>
+                </TiltCard>
               </Link>
             ))}
           </div>

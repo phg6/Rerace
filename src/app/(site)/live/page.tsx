@@ -6,6 +6,7 @@ import { eventStart, eventStatus, nextSession } from "@/lib/utils";
 import { seriesMeta } from "@/lib/series";
 import { SITE } from "@/lib/site";
 import { MediaCard } from "@/components/MediaCard";
+import { TiltCard } from "@/components/TiltCard";
 import { LiveBar } from "@/components/LiveBadge";
 import { SeriesTag } from "@/components/SeriesTag";
 import { SectionLabel, SectionHeading } from "@/components/SectionLabel";
@@ -44,7 +45,7 @@ export default async function LivePage() {
     .sort((a, b) => eventStart(a) - eventStart(b));
 
   return (
-    <div className="container-site space-y-14 pb-16 pt-8">
+    <div className="container-site space-y-14 pb-20 pt-10">
       {/* ============ PAGE HEADER ============ */}
       <header className="animate-rise">
         <SectionLabel className="mb-2">Live Hub</SectionLabel>
@@ -106,25 +107,31 @@ export default async function LivePage() {
             {upcoming.map((e) => {
               const next = nextSession(e);
               return (
-                <article key={e.id} className="glass overflow-hidden transition-all hover:border-race/50 hover:shadow-glow-red">
-                  <Link href={`/watch/${e.id}`} className="relative block aspect-[21/9]">
+                <TiltCard key={e.id} maxTilt={5} className="h-full">
+                  <Link
+                    href={`/watch/${e.id}`}
+                    className="relative block aspect-[21/9] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-race"
+                  >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={e.image || seriesMeta(e.series).poster}
                       alt=""
                       loading="lazy"
-                      className="h-full w-full object-cover"
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.05]"
                     />
                     <div className="img-overlay" />
                     <SeriesTag series={e.series} className="absolute left-3 top-3" />
                   </Link>
                   <div className="p-5">
-                    <Link href={`/watch/${e.id}`}>
-                      <h3 className="text-lg font-bold leading-snug text-white transition-colors hover:text-race-bright">
+                    <Link
+                      href={`/watch/${e.id}`}
+                      className="rounded-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-race"
+                    >
+                      <h3 className="line-clamp-2 text-lg font-bold leading-snug text-white transition-colors hover:text-race-bright">
                         {e.title}
                       </h3>
                     </Link>
-                    <p className="mt-1 text-xs text-zinc-400">
+                    <p className="mt-1 truncate text-xs text-zinc-400">
                       {e.circuit} · {e.country}
                     </p>
                     {next && (
@@ -150,7 +157,7 @@ export default async function LivePage() {
                       </>
                     )}
                   </div>
-                </article>
+                </TiltCard>
               );
             })}
           </div>

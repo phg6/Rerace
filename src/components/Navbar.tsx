@@ -40,15 +40,24 @@ export function Navbar({ adSlot }: { adSlot?: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
-    const supabase = createClient();
-    supabase.auth.getUser().then(({ data }) => setUser(data.user ?? null));
-    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
-      setUser(session?.user ?? null);
-    });
-    return () => sub.subscription.unsubscribe();
+    try {
+      const supabase = createClient();
+      supabase.auth.getUser().then(({ data }) => setUser(data.user ?? null));
+      const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
+        setUser(session?.user ?? null);
+      });
+      return () => sub.subscription.unsubscribe();
+    } catch {
+      // Supabase not configured — render the signed-out navbar.
+    }
   }, []);
 
-  useEffect(() => setOpenMenu(null), [pathname]);
+  // Close any open mega menu when the route changes (adjust-state-during-render).
+  const [lastPath, setLastPath] = useState(pathname);
+  if (lastPath !== pathname) {
+    setLastPath(pathname);
+    setOpenMenu(null);
+  }
 
   const openSearch = () => window.dispatchEvent(new CustomEvent("rerace:search"));
 
@@ -102,6 +111,13 @@ export function Navbar({ adSlot }: { adSlot?: React.ReactNode }) {
                 {l.label}
               </Link>
             ))}
+            <Link
+              href="/teams"
+              onMouseEnter={() => setOpenMenu(null)}
+              className={cn("btn-ghost text-sm", pathname?.startsWith("/teams") && "text-white")}
+            >
+              Teams
+            </Link>
           </div>
         </div>
 
@@ -109,7 +125,7 @@ export function Navbar({ adSlot }: { adSlot?: React.ReactNode }) {
           <button
             onClick={openSearch}
             aria-label="Search"
-            className="flex h-9 items-center gap-2 rounded-full border border-white/[0.1] bg-white/[0.05] px-3 text-sm text-zinc-400 backdrop-blur transition hover:border-race/60 hover:text-white"
+            className="flex h-9 items-center gap-2 rounded-full border border-white/[0.1] bg-white/[0.05] px-3 text-sm text-zinc-400 backdrop-blur transition hover:border-race/60 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-race"
           >
             <Search className="h-4 w-4" />
             <span className="hidden md:inline">Search</span>
@@ -172,7 +188,7 @@ function MegaCard({ item }: { item: MegaItem }) {
   return (
     <Link
       href={item.href}
-      className="group/mc relative block overflow-hidden rounded-[14px] border border-white/[0.07]"
+      className="group/mc relative block overflow-hidden rounded-[14px] border border-white/[0.07] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-race"
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
@@ -203,7 +219,7 @@ function UserMenu({ user }: { user: User }) {
       <button
         onClick={() => setOpen((v) => !v)}
         aria-label="Account menu"
-        className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border border-white/[0.12] bg-white/[0.05] transition hover:border-race/60"
+        className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border border-white/[0.12] bg-white/[0.05] transition hover:border-race/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-race"
       >
         {avatar ? (
           // eslint-disable-next-line @next/next/no-img-element

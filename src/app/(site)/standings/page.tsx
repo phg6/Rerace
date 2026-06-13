@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { getStandings } from "@/lib/data/content";
 import { seriesMeta } from "@/lib/series";
 import { SITE } from "@/lib/site";
 import type { StandingRow, StandingsTable } from "@/lib/types";
-import { cn } from "@/lib/utils";
+import { cn, slugify } from "@/lib/utils";
 import { SectionLabel } from "@/components/SectionLabel";
+import { TiltCard } from "@/components/TiltCard";
 import { LocalTime } from "@/components/LocalTime";
 import { EmptyState } from "@/components/EmptyState";
 import { StandingsTabs } from "@/components/standings/StandingsTabs";
@@ -71,22 +73,20 @@ function Avatar({ row, size = "h-16 w-16 text-lg" }: { row: StandingRow; size?: 
 function PodiumCard({ row }: { row: StandingRow }) {
   const first = row.position === 1;
   return (
-    <div
+    <TiltCard
       className={cn(
-        first
-          ? "glass-strong order-first border-race/40 shadow-glow-red sm:order-none sm:-translate-y-5"
-          : "glass",
-        "flex flex-col items-center p-6 text-center transition-transform"
+        first && "glass-strong order-first border-race/40 shadow-glow-red sm:order-none sm:-translate-y-5",
+        "flex flex-col items-center p-6 text-center"
       )}
     >
-      <span className={cn("font-display text-3xl", first ? "text-race-bright" : "text-zinc-500")}>
+      <span className={cn("text-3xl font-extrabold tabular-nums", first ? "text-race-bright" : "text-zinc-500")}>
         {row.position}
       </span>
       <div className="mt-3">
         <Avatar row={row} />
       </div>
-      <p className="mt-3 text-base font-bold text-white">{row.name}</p>
-      {row.team && <p className="mt-0.5 text-xs text-zinc-400">{row.team}</p>}
+      <p className="mt-3 max-w-full truncate text-base font-bold text-white">{row.name}</p>
+      {row.team && <p className="mt-0.5 max-w-full truncate text-xs text-zinc-400">{row.team}</p>}
       <p className="mt-4 text-3xl font-extrabold tabular-nums text-white">{row.points}</p>
       <p className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">pts</p>
       {typeof row.wins === "number" && (
@@ -94,7 +94,7 @@ function PodiumCard({ row }: { row: StandingRow }) {
           {row.wins} win{row.wins === 1 ? "" : "s"}
         </p>
       )}
-    </div>
+    </TiltCard>
   );
 }
 
@@ -113,6 +113,8 @@ function StandingsSection({ table }: { table: StandingsTable }) {
   const top3 = table.rows.slice(0, 3);
   // Desktop podium order: 2nd | 1st (elevated) | 3rd. Champion comes first on mobile.
   const podium = [top3[1], top3[0], top3[2]].filter((r): r is StandingRow => Boolean(r));
+  // F1 constructor rows link through to the team profile pages.
+  const linkTeams = table.series === "f1" && (table.kind === "constructors" || table.kind === "teams");
 
   return (
     <div>
@@ -144,20 +146,29 @@ function StandingsSection({ table }: { table: StandingsTable }) {
           <tbody className="divide-y divide-white/[0.06]">
             {table.rows.map((row) => (
               <tr key={`${row.position}-${row.name}`} className="transition-colors hover:bg-white/[0.03]">
-                <td className="font-display w-12 px-5 py-3 text-base text-zinc-500">{row.position}</td>
-                <td className="px-3 py-3">
+                <td className="w-12 px-5 py-3 text-base font-bold tabular-nums text-zinc-500">{row.position}</td>
+                <td className="w-full px-3 py-3">
                   <div className="flex items-center gap-3">
                     <span
                       className="h-7 w-1 shrink-0 rounded-full"
                       style={{ backgroundColor: row.teamColor ?? "#52525b" }}
                     />
                     <div className="min-w-0">
-                      <p className="truncate font-semibold text-white">{row.name}</p>
+                      {linkTeams ? (
+                        <Link
+                          href={`/teams/${slugify(row.name)}`}
+                          className="block truncate font-semibold text-white transition-colors hover:text-race-bright"
+                        >
+                          {row.name}
+                        </Link>
+                      ) : (
+                        <p className="truncate font-semibold text-white">{row.name}</p>
+                      )}
                       {row.team && <p className="truncate text-xs text-zinc-500">{row.team}</p>}
                     </div>
                   </div>
                 </td>
-                <td className="px-3 py-3 text-right font-bold tabular-nums text-white">{row.points}</td>
+                <td className="whitespace-nowrap px-3 py-3 text-right font-bold tabular-nums text-white">{row.points}</td>
                 <td className="px-3 py-3 text-right tabular-nums text-zinc-300">{row.wins ?? 0}</td>
                 <td className="px-5 py-3 text-right text-xs tabular-nums">
                   <PositionChange change={row.positionChange} />
@@ -169,7 +180,8 @@ function StandingsSection({ table }: { table: StandingsTable }) {
       </div>
 
       <p className="mt-4 text-xs text-zinc-500">
-        Updated <LocalTime iso={table.updatedAt} mode="relative" />
+        As of <LocalTime iso={table.updatedAt} mode="datetime" /> · updated{" "}
+        <LocalTime iso={table.updatedAt} mode="relative" />
       </p>
     </div>
   );

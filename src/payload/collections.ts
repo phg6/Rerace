@@ -25,10 +25,15 @@ export const Users: CollectionConfig = {
 export const Events: CollectionConfig = {
   slug: "events",
   access: publicRead,
-  admin: { useAsTitle: "title", defaultColumns: ["title", "series", "eventId"] },
+  admin: {
+    useAsTitle: "title",
+    defaultColumns: ["title", "series", "eventId"],
+    description:
+      "F1 events are AUTO-GENERATED from the season calendar (ids like f1-2026-r10) — do not create them by hand. To attach streams or override fields on an auto event, create an event here with the SAME eventId; it overrides/extends the generated one. Other series are managed manually as before.",
+  },
   fields: [
     { name: "title", type: "text", required: true },
-    { name: "eventId", type: "text", required: true, unique: true, admin: { description: "Public id used in the /watch URL, e.g. f1-spain-2026" } },
+    { name: "eventId", type: "text", required: true, unique: true, admin: { description: "Public id used in the /watch URL. Use the auto-generated F1 id (e.g. f1-2026-r10) to attach streams to a calendar event." } },
     { name: "series", type: "select", options: seriesOptions, required: true, defaultValue: "f1" },
     { name: "circuit", type: "text" },
     { name: "country", type: "text" },
@@ -55,6 +60,8 @@ export const Events: CollectionConfig = {
         { name: "source", type: "text", required: true },
         { name: "url", type: "text", required: true },
         { name: "kind", type: "select", options: ["iframe", "hls"], defaultValue: "iframe", required: true },
+        { name: "role", type: "select", options: ["feed", "onboard"], defaultValue: "feed", required: true },
+        { name: "driver", type: "text", admin: { description: "Onboard cam driver name, e.g. Max Verstappen", condition: (_data, siblingData) => siblingData?.role === "onboard" } },
       ],
     },
   ],
@@ -100,7 +107,18 @@ export const Media: CollectionConfig = {
 export const NewsPosts: CollectionConfig = {
   slug: "news-posts",
   access: publicRead,
-  admin: { useAsTitle: "title", defaultColumns: ["title", "publishedAt"] },
+  admin: { useAsTitle: "title", defaultColumns: ["title", "publishedAt", "pinPriority"] },
+  hooks: {
+    beforeChange: [
+      ({ data, originalDoc }) => {
+        if (!data) return data;
+        const wasPinned = Boolean(originalDoc?.pinPriority);
+        if (data.pinPriority && !wasPinned) data.pinnedAt = new Date().toISOString();
+        else if (data.pinPriority === false && wasPinned) data.pinnedAt = null;
+        return data;
+      },
+    ],
+  },
   fields: [
     { name: "title", type: "text", required: true },
     { name: "slug", type: "text", required: true, unique: true },
@@ -109,6 +127,9 @@ export const NewsPosts: CollectionConfig = {
     { name: "series", type: "select", options: seriesOptions, defaultValue: "general", required: true },
     { name: "author", type: "text", defaultValue: "Rerace Team" },
     { name: "publishedAt", type: "date", required: true },
+    { name: "pinPriority", type: "checkbox", defaultValue: false, label: "Pin to top news (slot #2)" },
+    { name: "pinHours", type: "number", defaultValue: 6, min: 1, admin: { description: "How long the pin lasts, in hours", condition: (data) => Boolean(data?.pinPriority) } },
+    { name: "pinnedAt", type: "date", admin: { readOnly: true, description: "Set automatically when the pin is enabled" } },
     { name: "body", type: "richText" },
   ],
 };
@@ -138,6 +159,10 @@ export const Drivers: CollectionConfig = {
     { name: "country", type: "text" },
     { name: "image", type: "text" },
     { name: "bio", type: "textarea" },
+    { name: "championships", type: "number" },
+    { name: "careerWins", type: "number" },
+    { name: "careerPodiums", type: "number" },
+    { name: "careerPoles", type: "number" },
     { name: "stats", type: "array", fields: [
       { name: "label", type: "text", required: true },
       { name: "value", type: "text", required: true },
@@ -155,6 +180,13 @@ export const Teams: CollectionConfig = {
     { name: "series", type: "select", options: seriesOptions, defaultValue: "f1", required: true },
     { name: "color", type: "text", admin: { description: "Hex color, e.g. #ff8000" } },
     { name: "base", type: "text" },
+    { name: "fullName", type: "text", admin: { description: "Full entrant name, e.g. McLaren Mastercard Formula 1 Team" } },
+    { name: "principal", type: "text" },
+    { name: "engine", type: "text" },
+    { name: "carName", type: "text" },
+    { name: "championships", type: "number" },
+    { name: "raceWins", type: "number" },
+    { name: "firstEntry", type: "number" },
     { name: "image", type: "text" },
     { name: "bio", type: "textarea" },
   ],

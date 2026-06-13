@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Bell, BellRing, CalendarPlus } from "lucide-react";
+import { useNow } from "@/lib/hooks";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 
@@ -26,6 +27,7 @@ export function ReminderButton({
   className?: string;
 }) {
   const supabase = useMemo(() => createClient(), []);
+  const now = useNow(60_000);
   const [userId, setUserId] = useState<string | null | undefined>(undefined);
   const [email, setEmail] = useState<string | null>(null);
   const [isSet, setIsSet] = useState(false);
@@ -76,7 +78,7 @@ export function ReminderButton({
     setBusy(false);
   };
 
-  if (Date.parse(startsAt) < Date.now()) return null;
+  if (now !== null && Date.parse(startsAt) < now) return null;
 
   if (userId === null) {
     return (

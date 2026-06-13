@@ -6,7 +6,8 @@ import { Check, Globe, Info, MessageSquare, MonitorPlay, X } from "lucide-react"
 import type { RaceEvent, StreamSource } from "@/lib/types";
 import { cn, eventStatus, nextSession, sessionStatus } from "@/lib/utils";
 import { seriesMeta } from "@/lib/series";
-import { VideoPlayer } from "@/components/VideoPlayer";
+import { ReracePlayer } from "@/components/player/ReracePlayer";
+import { PlayerOverlay } from "@/components/player/PlayerOverlay";
 import { Countdown } from "@/components/Countdown";
 import { LiveBar, LivePill } from "@/components/LiveBadge";
 import { SeriesTag } from "@/components/SeriesTag";
@@ -40,9 +41,14 @@ export function WatchView({ event }: { event: RaceEvent }) {
   const next = nextSession(event, now);
   const poster = event.image || seriesMeta(event.series).poster;
 
-  const [selectedId, setSelectedId] = useState<string | null>(event.streams[0]?.id ?? null);
-  const selected = event.streams.find((s) => s.id === selectedId) ?? event.streams[0];
-  const [activeLang, setActiveLang] = useState(event.streams[0]?.language ?? "");
+  const feeds = event.streams.filter((s) => (s.role ?? "feed") !== "onboard");
+  // Never auto-select an onboard: onboards are members-only and their urls are
+  // stripped from the public payload — without feeds we show the pre-show panel.
+  const firstStream = feeds[0] ?? null;
+  // Selected stream is held as an object: gated onboard sources come from the
+  // authed route handler via PlayerOverlay and aren't in event.streams.
+  const [selected, setSelected] = useState<StreamSource | null>(firstStream);
+  const [activeLang, setActiveLang] = useState(firstStream?.language ?? "");
 
   const [chatOpen, setChatOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<MobileTab>("chat");
@@ -58,13 +64,15 @@ export function WatchView({ event }: { event: RaceEvent }) {
     return () => mq.removeEventListener("change", update);
   }, []);
 
+  // Compact fallback selector (feeds only) — the in-player overlay is the
+  // primary stream/language/onboard UX; onboards stay gated inside it.
   const selector = (
     <StreamSelector
-      streams={event.streams}
+      streams={feeds}
       activeLang={activeLang}
       onLang={setActiveLang}
       selectedId={selected?.id ?? null}
-      onSelect={setSelectedId}
+      onSelect={(id) => setSelected(feeds.find((s) => s.id === id) ?? null)}
     />
   );
 
@@ -74,12 +82,27 @@ export function WatchView({ event }: { event: RaceEvent }) {
       <div className="min-w-0 flex-1">
         {status === "live" && selected ? (
           <div>
-            <VideoPlayer
+            <ReracePlayer
               url={selected.url}
               kind={selected.kind}
               title={`${event.title} — ${selected.label}`}
               poster={poster}
               autoPlay
+              live
+              overlay={
+                <PlayerOverlay
+                  eventId={event.id}
+                  streams={event.streams}
+                  series={event.series}
+                  selectedId={selected?.id ?? null}
+                  onSelect={(s) => {
+                    setSelected(s);
+                    setActiveLang(s.language);
+                  }}
+                  activeLang={activeLang}
+                  onLang={setActiveLang}
+                />
+              }
             />
             <LiveBar className="mt-3" />
           </div>

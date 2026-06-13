@@ -103,7 +103,7 @@ export default async function AccountPage() {
   });
 
   return (
-    <div className="container-site space-y-12 py-12">
+    <div className="container-site space-y-12 pb-20 pt-10">
       {/* ============ HEADER ============ */}
       <section className="glass-strong flex flex-col items-start gap-6 p-8 sm:flex-row sm:items-center animate-rise">
         <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/[0.12] bg-white/[0.06]">

@@ -2,7 +2,6 @@
 
 import { Fragment, useMemo, useState } from "react";
 import Link from "next/link";
-import { ExternalLink } from "lucide-react";
 import { SERIES, seriesMeta } from "@/lib/series";
 import type { SeriesKey } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -22,13 +21,16 @@ export interface NewsListArticle {
   excerpt?: string;
   series: SeriesKey;
   publishedAt: string;
+  /** pinned Rerace original — rendered with the FEATURED marker */
+  pinned?: boolean;
 }
 
+/** Gold badge marking Rerace original stories. */
 export function ReraceBadge({ className }: { className?: string }) {
   return (
     <span
       className={cn(
-        "font-display inline-flex items-center rounded-full bg-race px-2.5 py-0.5 text-[10px] uppercase tracking-[0.18em] text-white",
+        "font-display inline-flex items-center rounded-full bg-gradient-to-r from-amber-300 to-amber-500 px-2.5 py-0.5 text-[10px] uppercase tracking-[0.18em] text-black",
         className
       )}
     >
@@ -37,52 +39,57 @@ export function ReraceBadge({ className }: { className?: string }) {
   );
 }
 
-function NewsCard({ article }: { article: NewsListArticle }) {
-  const inner = (
-    <TiltCard className="flex h-full flex-col">
-      <div className="relative aspect-video w-full overflow-hidden">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={article.image || seriesMeta(article.series).poster}
-          alt=""
-          loading="lazy"
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.06]"
-        />
-        <div className="img-overlay" />
-        <div className="absolute left-3 top-3 flex items-center gap-2">
-          <SeriesTag series={article.series} />
-          {article.isOriginal && <ReraceBadge />}
-        </div>
-      </div>
-      <div className="flex flex-1 flex-col p-4">
-        <h3 className="line-clamp-2 text-sm font-semibold leading-snug text-white group-hover:text-race-bright">
-          {article.title}
-        </h3>
-        {article.excerpt && (
-          <p className="mt-1.5 line-clamp-2 text-xs leading-relaxed text-zinc-400">{article.excerpt}</p>
-        )}
-        <div className="mt-auto flex items-center justify-between gap-3 pt-3 text-xs text-zinc-500">
-          <span className="inline-flex min-w-0 items-center gap-1.5">
-            <span className="truncate font-medium text-zinc-400">{article.source}</span>
-            {!article.isOriginal && <ExternalLink className="h-3 w-3 shrink-0" />}
-          </span>
-          <LocalTime iso={article.publishedAt} mode="relative" className="shrink-0" />
-        </div>
-      </div>
-    </TiltCard>
-  );
-
-  if (article.isOriginal) {
-    return (
-      <Link href={article.url} className="block h-full focus-visible:outline-none">
-        {inner}
-      </Link>
-    );
-  }
+/** Red pill marking the pinned original story. */
+export function FeaturedPill({ className }: { className?: string }) {
   return (
-    <a href={article.url} target="_blank" rel="noopener noreferrer" className="block h-full focus-visible:outline-none">
-      {inner}
-    </a>
+    <span
+      className={cn(
+        "inline-flex items-center gap-1.5 rounded-full bg-race px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-[0.18em] text-white shadow-glow-red",
+        className
+      )}
+    >
+      <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-white" />
+      Featured
+    </span>
+  );
+}
+
+function NewsCard({ article }: { article: NewsListArticle }) {
+  return (
+    <Link
+      href={article.url}
+      className="block h-full rounded-card focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-race"
+    >
+      <TiltCard className={cn("flex h-full flex-col", article.pinned && "border-race/40")}>
+        <div className="relative aspect-video w-full overflow-hidden">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={article.image || seriesMeta(article.series).poster}
+            alt=""
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.06]"
+          />
+          <div className="img-overlay" />
+          <div className="absolute left-3 top-3 flex flex-wrap items-center gap-2">
+            {article.pinned && <FeaturedPill />}
+            <SeriesTag series={article.series} />
+            {article.isOriginal && <ReraceBadge />}
+          </div>
+        </div>
+        <div className="flex flex-1 flex-col p-4">
+          <h3 className="line-clamp-2 text-sm font-semibold leading-snug text-white group-hover:text-race-bright">
+            {article.title}
+          </h3>
+          {article.excerpt && (
+            <p className="mt-1.5 line-clamp-2 text-xs leading-relaxed text-zinc-400">{article.excerpt}</p>
+          )}
+          <div className="mt-auto flex items-center justify-between gap-3 pt-3 text-xs text-zinc-500">
+            <span className="truncate font-medium text-zinc-400">{article.source}</span>
+            <LocalTime iso={article.publishedAt} mode="relative" className="shrink-0" />
+          </div>
+        </div>
+      </TiltCard>
+    </Link>
   );
 }
 
@@ -105,7 +112,7 @@ export function NewsList({
 
   const chip = (active: boolean) =>
     cn(
-      "inline-flex shrink-0 items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold transition-all",
+      "inline-flex shrink-0 items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-race",
       active
         ? "border-race/70 bg-race/15 text-white shadow-glow-red"
         : "border-white/[0.1] bg-white/[0.04] text-zinc-400 hover:border-white/25 hover:text-white"

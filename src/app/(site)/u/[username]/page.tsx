@@ -4,7 +4,9 @@ import { Award, Trophy } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { SectionLabel } from "@/components/SectionLabel";
 import { SeriesTag } from "@/components/SeriesTag";
+import { TiltCard } from "@/components/TiltCard";
 import { LocalTime } from "@/components/LocalTime";
+import { EmptyState } from "@/components/EmptyState";
 
 interface ProfileRow {
   id: string;
@@ -96,7 +98,7 @@ export default async function PublicProfilePage({
   const displayName = profile.display_name || profile.username;
 
   return (
-    <div className="container-site space-y-12 py-12">
+    <div className="container-site space-y-12 pb-20 pt-10">
       {/* ============ HERO ============ */}
       <section className="glass-strong flex flex-col items-start gap-6 p-8 sm:flex-row sm:items-center animate-rise">
         <div className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/[0.12] bg-white/[0.06]">
@@ -133,18 +135,21 @@ export default async function PublicProfilePage({
         <SectionLabel className="mb-2">Trophy Cabinet</SectionLabel>
         <h2 className="mb-6 text-2xl font-bold tracking-tight text-white">Badges</h2>
         {badges.length === 0 ? (
-          <div className="glass p-8 text-center text-sm text-zinc-400">
-            No badges earned yet — the season is long.
-          </div>
+          <EmptyState
+            title="No badges earned yet"
+            message="The season is long — badges land here as milestones are hit."
+            ctaHref="/predictions"
+            ctaLabel="Play predictions"
+          />
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {badges.map((badge) => {
               const color = TIER_COLORS[badge.tier] ?? "#a1a1aa";
               const date = awardedAt.get(badge.slug);
               return (
-                <div
+                <TiltCard
                   key={badge.slug}
-                  className="glass p-5"
+                  className="p-5"
                   style={{ borderColor: `${color}66`, boxShadow: `0 0 24px -8px ${color}55` }}
                 >
                   <div className="flex items-start gap-3">
@@ -172,7 +177,7 @@ export default async function PublicProfilePage({
                       Earned <LocalTime iso={date} mode="date" />
                     </p>
                   )}
-                </div>
+                </TiltCard>
               );
             })}
           </div>

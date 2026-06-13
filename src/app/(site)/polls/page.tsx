@@ -3,6 +3,7 @@ import { History } from "lucide-react";
 import { getActivePoll, getPastPolls } from "@/lib/data/content";
 import { SITE } from "@/lib/site";
 import { SectionLabel, SectionHeading } from "@/components/SectionLabel";
+import { TiltCard } from "@/components/TiltCard";
 import { LocalTime } from "@/components/LocalTime";
 import { PollWidget } from "@/components/PollWidget";
 import { EmptyState } from "@/components/EmptyState";
@@ -62,20 +63,25 @@ export default async function PollsPage() {
       <section className="max-w-3xl">
         <SectionHeading label="Archive" title="Previous polls" />
         {pastPolls.length === 0 ? (
-          <p className="text-sm text-zinc-500">
-            No past polls yet — the archive fills up as new questions roll through every day.
-          </p>
+          <EmptyState
+            title="No past polls yet"
+            message="The archive fills up as new questions roll through every day."
+            ctaHref="/news"
+            ctaLabel="Read the news"
+          />
         ) : (
           <ul className="space-y-3">
             {pastPolls.map((p) => (
-              <li key={p.id} className="glass flex flex-wrap items-center justify-between gap-3 p-5">
-                <div className="flex min-w-0 items-center gap-3">
-                  <History className="h-4 w-4 shrink-0 text-zinc-500" />
-                  <p className="min-w-0 text-sm font-semibold text-white">{p.question}</p>
-                </div>
-                <p className="shrink-0 text-xs text-zinc-500">
-                  <LocalTime iso={p.startsAt} mode="date" /> — <LocalTime iso={p.endsAt} mode="date" />
-                </p>
+              <li key={p.id}>
+                <TiltCard maxTilt={4} className="flex flex-wrap items-center justify-between gap-3 p-5">
+                  <div className="flex min-w-0 items-center gap-3">
+                    <History className="h-4 w-4 shrink-0 text-zinc-500" />
+                    <p className="min-w-0 text-sm font-semibold text-white">{p.question}</p>
+                  </div>
+                  <p className="shrink-0 text-xs text-zinc-500">
+                    <LocalTime iso={p.startsAt} mode="date" /> — <LocalTime iso={p.endsAt} mode="date" />
+                  </p>
+                </TiltCard>
               </li>
             ))}
           </ul>

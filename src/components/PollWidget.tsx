@@ -41,8 +41,8 @@ export function PollWidget({ poll, className }: { poll: Poll; className?: string
           .maybeSingle();
         if (mine) setMyVote(mine.option_index);
       }
+      void loadVotes();
     });
-    loadVotes();
 
     const channel = supabase
       .channel(`poll-${poll.id}`)

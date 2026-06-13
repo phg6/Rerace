@@ -24,7 +24,13 @@ export interface MediaCardProps {
 export function MediaCard(props: MediaCardProps) {
   const img = props.image || seriesMeta(props.series).poster;
   return (
-    <Link href={props.href} className={cn("block focus-visible:outline-none", props.className)}>
+    <Link
+      href={props.href}
+      className={cn(
+        "block h-full rounded-card focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-race",
+        props.className
+      )}
+    >
       <TiltCard className="h-full">
         <div className="relative aspect-video w-full overflow-hidden">
           {/* eslint-disable-next-line @next/next/no-img-element */}

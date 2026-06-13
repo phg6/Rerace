@@ -11,8 +11,21 @@ const dirname = path.dirname(filename);
 export default buildConfig({
   admin: {
     user: "users",
+    theme: "dark",
     meta: {
+      title: "Rerace Control Room",
       titleSuffix: " — Rerace CMS",
+    },
+    importMap: {
+      baseDir: path.resolve(dirname),
+      importMapFile: path.resolve(dirname, "app/(payload)/admin/importMap.js"),
+    },
+    components: {
+      graphics: {
+        Logo: "/payload/components/Graphics#BrandLogo",
+        Icon: "/payload/components/Graphics#BrandIcon",
+      },
+      beforeLogin: ["/payload/components/Graphics#BeforeLogin"],
     },
   },
   collections,

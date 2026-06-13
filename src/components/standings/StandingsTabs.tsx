@@ -28,7 +28,7 @@ export function StandingsTabs({
             aria-selected={i === active}
             onClick={() => setActive(i)}
             className={cn(
-              "shrink-0 rounded-full border px-4 py-2 text-sm font-semibold transition-all",
+              "shrink-0 rounded-full border px-4 py-2 text-sm font-semibold transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-race",
               i === active
                 ? "border-race/70 bg-race/15 text-white shadow-glow-red"
                 : "border-white/[0.1] bg-white/[0.04] text-zinc-400 hover:border-white/25 hover:text-white"

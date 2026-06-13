@@ -3,9 +3,11 @@ import Link from "next/link";
 import { Flag, Medal, Target, Timer, Trophy } from "lucide-react";
 import { getDrivers, getEvents } from "@/lib/data/content";
 import { getUser, createClient } from "@/lib/supabase/server";
+import type { RaceEvent } from "@/lib/types";
 import { sessionStatus } from "@/lib/utils";
 import { SectionLabel } from "@/components/SectionLabel";
 import { SeriesTag } from "@/components/SeriesTag";
+import { TiltCard } from "@/components/TiltCard";
 import { LocalTime } from "@/components/LocalTime";
 import { EmptyState } from "@/components/EmptyState";
 import { PredictionForm, type PredictionRow } from "@/components/predictions/PredictionForm";
@@ -24,18 +26,22 @@ const SCORING = [
   { icon: Trophy, points: "+15 pts", text: "Bonus for nailing the entire podium in the right order." },
 ] as const;
 
-export default async function PredictionsPage() {
-  const [events, drivers, user] = await Promise.all([getEvents(), getDrivers(), getUser()]);
-
-  // Next F1 event with an upcoming (not finished) race session.
+/** Next F1 event with an upcoming (not finished) race session. */
+function nextF1Race(events: RaceEvent[]) {
   const now = Date.now();
-  const target = events
+  return events
     .filter((e) => e.series === "f1")
     .flatMap((e) => {
       const race = e.sessions.find((s) => s.key === "race");
       return race && sessionStatus(race, now) !== "finished" ? [{ event: e, race }] : [];
     })
     .sort((a, b) => Date.parse(a.race.startsAt) - Date.parse(b.race.startsAt))[0];
+}
+
+export default async function PredictionsPage() {
+  const [events, drivers, user] = await Promise.all([getEvents(), getDrivers(), getUser()]);
+
+  const target = nextF1Race(events);
 
   // Unique F1 drivers for the pickers.
   const seen = new Set<string>();
@@ -61,7 +67,7 @@ export default async function PredictionsPage() {
   }
 
   return (
-    <div className="container-site space-y-12 py-12">
+    <div className="container-site space-y-12 pb-20 pt-10">
       {/* ============ HEADER ============ */}
       <section className="animate-rise">
         <SectionLabel className="mb-2">Play</SectionLabel>
@@ -79,11 +85,11 @@ export default async function PredictionsPage() {
         <SectionLabel className="mb-4">How Scoring Works</SectionLabel>
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {SCORING.map((rule) => (
-            <div key={rule.points} className="glass p-5">
+            <TiltCard key={rule.points} className="p-5">
               <rule.icon className="h-5 w-5 text-race-bright" />
               <p className="font-display mt-3 text-lg text-white">{rule.points}</p>
               <p className="mt-1.5 text-sm text-zinc-400">{rule.text}</p>
-            </div>
+            </TiltCard>
           ))}
         </div>
       </section>

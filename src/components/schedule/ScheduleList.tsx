@@ -1,13 +1,15 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { CalendarDays, Play } from "lucide-react";
+import { useNow } from "@/lib/hooks";
 import { SERIES, seriesMeta } from "@/lib/series";
 import type { EventStatus, SeriesKey } from "@/lib/types";
 import { cn, sessionStatus } from "@/lib/utils";
 import { SectionLabel } from "@/components/SectionLabel";
 import { SeriesTag } from "@/components/SeriesTag";
+import { TiltCard } from "@/components/TiltCard";
 import { LocalTime } from "@/components/LocalTime";
 import { LivePill, LiveBar } from "@/components/LiveBadge";
 import { Countdown } from "@/components/Countdown";
@@ -45,7 +47,7 @@ function dayLabel(d: Date, now: number): string {
 
 function Row({ item, live }: { item: ScheduleItem; live: boolean }) {
   return (
-    <div className={cn("glass p-4 transition-all hover:border-race/40", live && "border-race/40")}>
+    <TiltCard maxTilt={3} className={cn("p-4", live && "border-race/40")}>
       <div className="flex items-center gap-4">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -96,7 +98,7 @@ function Row({ item, live }: { item: ScheduleItem; live: boolean }) {
         </div>
       </div>
       {live && <LiveBar className="mt-3" />}
-    </div>
+    </TiltCard>
   );
 }
 
@@ -104,13 +106,7 @@ function Row({ item, live }: { item: ScheduleItem; live: boolean }) {
 export function ScheduleList({ items }: { items: ScheduleItem[] }) {
   const [filter, setFilter] = useState<"all" | SeriesKey>("all");
   // null until mounted — day grouping must happen in the viewer's timezone only.
-  const [now, setNow] = useState<number | null>(null);
-
-  useEffect(() => {
-    setNow(Date.now());
-    const t = setInterval(() => setNow(Date.now()), 30_000);
-    return () => clearInterval(t);
-  }, []);
+  const now = useNow(30_000);
 
   const presentSeries = useMemo(
     () => (Object.keys(SERIES) as SeriesKey[]).filter((key) => items.some((i) => i.series === key)),
@@ -130,7 +126,7 @@ export function ScheduleList({ items }: { items: ScheduleItem[] }) {
 
   const chip = (active: boolean) =>
     cn(
-      "inline-flex shrink-0 items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold transition-all",
+      "inline-flex shrink-0 items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-race",
       active
         ? "border-race/70 bg-race/15 text-white shadow-glow-red"
         : "border-white/[0.1] bg-white/[0.04] text-zinc-400 hover:border-white/25 hover:text-white"

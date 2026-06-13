@@ -12,7 +12,7 @@ const MEDIA_PATH: Record<MediaKind, string> = {
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [events, replays, media, news] = await Promise.all([
-    getEvents(),
+    getEvents({ all: true }),
     getReplays(),
     getMedia(),
     getNews(200),

@@ -30,7 +30,7 @@ export function BottomTabs() {
               key={t.href}
               href={t.href}
               className={cn(
-                "flex min-w-[56px] flex-col items-center gap-0.5 rounded-2xl px-3 py-1.5 text-[10px] font-medium transition-colors",
+                "flex min-w-[56px] flex-col items-center gap-0.5 rounded-2xl px-3 py-1.5 text-[10px] font-medium transition-colors focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-race",
                 active ? "bg-race/15 text-race-bright" : "text-zinc-400 hover:text-white"
               )}
             >

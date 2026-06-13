@@ -51,13 +51,13 @@ export default async function StatusPage() {
         : { text: "Service disruption", cls: "border-race/50 bg-race/10 text-race-bright" };
 
   return (
-    <div className="container-site py-12 sm:py-16">
+    <div className="container-site pb-20 pt-10">
       <AutoRefresh intervalMs={60_000} />
       <div className="mx-auto max-w-3xl animate-rise">
         <header>
-          <SectionLabel className="mb-3">Race Control</SectionLabel>
-          <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl">Status</h1>
-          <p className="mt-3 text-sm text-zinc-500">
+          <SectionLabel className="mb-2">Race Control</SectionLabel>
+          <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">Status</h1>
+          <p className="mt-2 text-sm text-zinc-500">
             Checked <LocalTime iso={report.checkedAt} mode="relative" /> — refreshes every minute.
           </p>
         </header>

@@ -89,8 +89,8 @@ export function LoginCard({
   return (
     <div className="glass-strong w-full max-w-md p-8 sm:p-10 animate-rise">
       {/* Wordmark */}
-      <p className="font-display select-none text-center text-2xl tracking-[0.18em] text-white">
-        RE<span className="text-race">RACE</span>
+      <p className="font-display select-none text-center text-2xl tracking-[0.08em] text-white">
+        Rerace
       </p>
       <p className="mt-2 text-center text-sm text-zinc-400">
         One free account for every race, every series.

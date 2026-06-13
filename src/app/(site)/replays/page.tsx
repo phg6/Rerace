@@ -5,6 +5,7 @@ import { getReplays } from "@/lib/data/content";
 import type { ReplayItem } from "@/lib/types";
 import { seriesMeta } from "@/lib/series";
 import { SectionLabel } from "@/components/SectionLabel";
+import { TiltCard } from "@/components/TiltCard";
 import { LocalTime } from "@/components/LocalTime";
 import { EmptyState } from "@/components/EmptyState";
 
@@ -65,7 +66,7 @@ function SessionChips({ sessions }: { sessions: ReplayItem[] }) {
         <Link
           key={s.id}
           href={`/replays/${s.id}`}
-          className="inline-flex items-center gap-1.5 rounded-full border border-white/[0.12] bg-white/[0.06] px-4 py-1.5 text-xs font-semibold text-zinc-200 backdrop-blur-xl transition-all duration-200 hover:border-race/60 hover:bg-white/[0.1] hover:text-white hover:shadow-glow-red"
+          className="inline-flex items-center gap-1.5 rounded-full border border-white/[0.12] bg-white/[0.06] px-4 py-1.5 text-xs font-semibold text-zinc-200 backdrop-blur-xl transition-all duration-200 hover:border-race/60 hover:bg-white/[0.1] hover:text-white hover:shadow-glow-red focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-race"
         >
           <Play className="h-3 w-3 fill-current" />
           {s.session}
@@ -82,12 +83,12 @@ export default async function ReplaysPage() {
   const f1Poster = seriesMeta("f1").poster;
 
   return (
-    <div className="container-site py-12 sm:py-16">
+    <div className="container-site pb-20 pt-10">
       {/* ============ HEADER ============ */}
       <header className="max-w-3xl animate-rise">
-        <SectionLabel className="mb-3">Formula 1</SectionLabel>
-        <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl">Replays</h1>
-        <p className="mt-4 text-sm leading-relaxed text-zinc-400 sm:text-base">
+        <SectionLabel className="mb-2">Formula 1</SectionLabel>
+        <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">Replays</h1>
+        <p className="mt-2 text-sm leading-relaxed text-zinc-400">
           {season ? `Every session of the ${season} season` : "Every session of the season"} — practice,
           qualifying, sprints and races, organised by race weekend.{" "}
           <span className="text-zinc-500">Only Formula 1 has full session replays on Rerace.</span>
@@ -111,12 +112,11 @@ export default async function ReplaysPage() {
           {weekends.map((w, i) => {
             const featured = i === 0;
             return (
-              <article
+              <TiltCard
                 key={w.key}
+                maxTilt={featured ? 3 : 6}
                 className={
-                  featured
-                    ? "glass-strong relative overflow-hidden p-7 sm:p-10 md:col-span-2"
-                    : "glass relative overflow-hidden p-6 transition-colors hover:border-race/40"
+                  featured ? "glass-strong p-7 sm:p-10 md:col-span-2" : "p-6"
                 }
               >
                 {featured && (
@@ -162,7 +162,7 @@ export default async function ReplaysPage() {
                     <SessionChips sessions={w.sessions} />
                   </div>
                 </div>
-              </article>
+              </TiltCard>
             );
           })}
         </div>

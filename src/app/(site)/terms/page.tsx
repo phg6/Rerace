@@ -19,11 +19,11 @@ function H2({ children }: { children: React.ReactNode }) {
 
 export default function TermsPage() {
   return (
-    <div className="container-site py-12 sm:py-16">
+    <div className="container-site pb-20 pt-10">
       <article className="mx-auto max-w-3xl animate-rise">
         <header>
-          <SectionLabel className="mb-3">Legal</SectionLabel>
-          <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl">Terms of Service</h1>
+          <SectionLabel className="mb-2">Legal</SectionLabel>
+          <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">Terms of Service</h1>
           <p className="mt-3 text-sm text-zinc-500">Last updated: June 11, 2026</p>
         </header>
 

@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ExternalLink } from "lucide-react";
 import { getNews } from "@/lib/data/content";
 import { seriesMeta } from "@/lib/series";
 import { SITE } from "@/lib/site";
 import type { NewsArticle } from "@/lib/types";
 import { SectionLabel } from "@/components/SectionLabel";
 import { SeriesTag } from "@/components/SeriesTag";
+import { TiltCard } from "@/components/TiltCard";
 import { LocalTime } from "@/components/LocalTime";
 import { AdSlot } from "@/components/AdSlot";
 import { EmptyState } from "@/components/EmptyState";
@@ -30,6 +30,10 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image" },
 };
 
+function isPinnedNow(n: NewsArticle): boolean {
+  return Boolean(n.isOriginal && n.pinnedUntil && Date.parse(n.pinnedUntil) > Date.now());
+}
+
 function toPlain(n: NewsArticle): NewsListArticle {
   return {
     id: n.id,
@@ -41,12 +45,13 @@ function toPlain(n: NewsArticle): NewsListArticle {
     excerpt: n.excerpt,
     series: n.series,
     publishedAt: n.publishedAt,
+    pinned: isPinnedNow(n),
   };
 }
 
 export default async function NewsPage() {
   const news = await getNews(60);
-  const featured = news.find((n) => n.image) ?? news[0];
+  const featured = news.find((n) => !isPinnedNow(n)) ?? news[0];
   const rest = news.filter((n) => n !== featured).map(toPlain);
 
   return (
@@ -69,50 +74,43 @@ export default async function NewsPage() {
       ) : (
         <>
           {/* ============ FEATURED TOP STORY ============ */}
-          {(() => {
-            const hero = (
-              <article className="glass group relative overflow-hidden">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={featured.image || seriesMeta(featured.series).poster}
-                  alt=""
-                  className="h-[340px] w-full object-cover transition-transform duration-700 group-hover:scale-[1.03] sm:h-[440px]"
-                />
-                <div className="img-overlay" />
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-night/70 via-transparent to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 p-6 sm:p-10">
-                  <div className="mb-3 flex flex-wrap items-center gap-2">
-                    <SectionLabel>Top Story</SectionLabel>
-                    <SeriesTag series={featured.series} />
-                    {featured.isOriginal && <ReraceBadge />}
-                  </div>
-                  <h2 className="max-w-3xl text-balance text-2xl font-extrabold leading-tight tracking-tight text-white group-hover:text-race-bright sm:text-4xl">
-                    {featured.title}
-                  </h2>
-                  {featured.excerpt && (
-                    <p className="mt-3 line-clamp-2 max-w-2xl text-sm leading-relaxed text-zinc-300 sm:text-base">
-                      {featured.excerpt}
-                    </p>
-                  )}
-                  <p className="mt-4 flex items-center gap-2 text-xs text-zinc-400">
-                    <span className="font-medium text-zinc-300">{featured.source}</span>
-                    {!featured.isOriginal && <ExternalLink className="h-3 w-3" />}
-                    <span>·</span>
-                    <LocalTime iso={featured.publishedAt} mode="relative" />
-                  </p>
+          <Link
+            href={featured.url}
+            className="block rounded-card focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-race"
+          >
+            <TiltCard maxTilt={3}>
+              <article>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={featured.image || seriesMeta(featured.series).poster}
+                alt=""
+                className="h-[340px] w-full object-cover transition-transform duration-700 group-hover:scale-[1.03] sm:h-[440px]"
+              />
+              <div className="img-overlay" />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-night/70 via-transparent to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 p-6 sm:p-10">
+                <div className="mb-3 flex flex-wrap items-center gap-2">
+                  <SectionLabel>Top Story</SectionLabel>
+                  <SeriesTag series={featured.series} />
+                  {featured.isOriginal && <ReraceBadge />}
                 </div>
+                <h2 className="max-w-3xl text-balance text-2xl font-extrabold leading-tight tracking-tight text-white group-hover:text-race-bright sm:text-4xl">
+                  {featured.title}
+                </h2>
+                {featured.excerpt && (
+                  <p className="mt-3 line-clamp-2 max-w-2xl text-sm leading-relaxed text-zinc-300 sm:text-base">
+                    {featured.excerpt}
+                  </p>
+                )}
+                <p className="mt-4 flex items-center gap-2 text-xs text-zinc-400">
+                  <span className="font-medium text-zinc-300">{featured.source}</span>
+                  <span>·</span>
+                  <LocalTime iso={featured.publishedAt} mode="relative" />
+                </p>
+              </div>
               </article>
-            );
-            return featured.isOriginal ? (
-              <Link href={featured.url} className="block focus-visible:outline-none">
-                {hero}
-              </Link>
-            ) : (
-              <a href={featured.url} target="_blank" rel="noopener noreferrer" className="block focus-visible:outline-none">
-                {hero}
-              </a>
-            );
-          })()}
+            </TiltCard>
+          </Link>
 
           {/* ============ THE REST — filterable grid ============ */}
           <NewsList articles={rest} adSlot={<AdSlot slotKey="news-feed" />} />

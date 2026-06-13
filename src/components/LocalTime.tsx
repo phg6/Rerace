@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useClientValue, useNow } from "@/lib/hooks";
 
 /**
  * Renders an ISO timestamp in the viewer's own timezone.
@@ -15,25 +15,25 @@ export function LocalTime({
   mode?: "datetime" | "time" | "date" | "weekday-time" | "relative";
   className?: string;
 }) {
-  const [text, setText] = useState<string | null>(null);
+  const now = useNow(mode === "relative" ? 30_000 : 0);
 
-  useEffect(() => {
+  let text: string | null = null;
+  if (now !== null) {
     const d = new Date(iso);
     if (mode === "relative") {
-      setText(relative(d));
-      const t = setInterval(() => setText(relative(d)), 30_000);
-      return () => clearInterval(t);
+      text = relative(d, now);
+    } else {
+      const opts: Intl.DateTimeFormatOptions =
+        mode === "time"
+          ? { hour: "2-digit", minute: "2-digit" }
+          : mode === "date"
+            ? { weekday: "short", day: "numeric", month: "short" }
+            : mode === "weekday-time"
+              ? { weekday: "long", hour: "2-digit", minute: "2-digit" }
+              : { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" };
+      text = new Intl.DateTimeFormat(undefined, opts).format(d);
     }
-    const opts: Intl.DateTimeFormatOptions =
-      mode === "time"
-        ? { hour: "2-digit", minute: "2-digit" }
-        : mode === "date"
-          ? { weekday: "short", day: "numeric", month: "short" }
-          : mode === "weekday-time"
-            ? { weekday: "long", hour: "2-digit", minute: "2-digit" }
-            : { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" };
-    setText(new Intl.DateTimeFormat(undefined, opts).format(d));
-  }, [iso, mode]);
+  }
 
   return (
     <time dateTime={iso} className={className} suppressHydrationWarning>
@@ -52,8 +52,8 @@ function fallbackUtc(iso: string, mode: string): string {
   return new Intl.DateTimeFormat("en-GB", opts).format(d) + " UTC";
 }
 
-function relative(d: Date): string {
-  const diff = d.getTime() - Date.now();
+function relative(d: Date, now: number): string {
+  const diff = d.getTime() - now;
   const abs = Math.abs(diff);
   const min = Math.round(abs / 60_000);
   const fmt = (v: number, unit: string) => (diff >= 0 ? `in ${v}${unit}` : `${v}${unit} ago`);
@@ -65,10 +65,10 @@ function relative(d: Date): string {
 
 /** "All times shown in your timezone" helper with detected zone name. */
 export function TimezoneNote({ className }: { className?: string }) {
-  const [zone, setZone] = useState<string | null>(null);
-  useEffect(() => {
-    setZone(Intl.DateTimeFormat().resolvedOptions().timeZone);
-  }, []);
+  const zone = useClientValue<string | null>(
+    () => Intl.DateTimeFormat().resolvedOptions().timeZone,
+    null
+  );
   return (
     <span className={className} suppressHydrationWarning>
       All times shown in your timezone{zone ? ` — ${zone.replace(/_/g, " ")}` : ""}.

@@ -8,6 +8,7 @@ import { eventStatus, eventStart, nextSession } from "@/lib/utils";
 import { SITE } from "@/lib/site";
 import { MediaCard } from "@/components/MediaCard";
 import { MediaRow, RowItem } from "@/components/MediaRow";
+import { TiltCard } from "@/components/TiltCard";
 import { LivePill, LiveBar } from "@/components/LiveBadge";
 import { SectionHeading } from "@/components/SectionLabel";
 import { LocalTime, TimezoneNote } from "@/components/LocalTime";
@@ -116,35 +117,37 @@ export default async function SeriesHubPage({
                   <Link
                     key={e.id}
                     href={`/watch/${e.id}`}
-                    className="glass group overflow-hidden transition-all hover:border-race/50 hover:shadow-glow-red"
+                    className="block h-full rounded-card focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-race"
                   >
-                    <div className="relative aspect-[21/9] w-full overflow-hidden">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={e.image || meta.poster}
-                        alt=""
-                        loading="lazy"
-                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.05]"
-                      />
-                      <div className="img-overlay" />
-                      {live && <LivePill className="absolute left-3 top-3" />}
-                    </div>
-                    <div className="p-4">
-                      <h3 className="truncate text-sm font-semibold text-white group-hover:text-race-bright">
-                        {e.title}
-                      </h3>
-                      <p className="mt-1 truncate text-xs text-zinc-500">
-                        {e.circuit} · {e.country}
-                      </p>
-                      {next && (
-                        <p className="mt-1.5 inline-flex items-center gap-1.5 text-xs text-zinc-400">
-                          <CalendarDays className="h-3 w-3 text-zinc-500" />
-                          {next.name} ·{" "}
-                          <LocalTime iso={next.startsAt} mode="weekday-time" className="text-race-bright" />
+                    <TiltCard className="h-full">
+                      <div className="relative aspect-[21/9] w-full overflow-hidden">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={e.image || meta.poster}
+                          alt=""
+                          loading="lazy"
+                          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.05]"
+                        />
+                        <div className="img-overlay" />
+                        {live && <LivePill className="absolute left-3 top-3" />}
+                      </div>
+                      <div className="p-4">
+                        <h3 className="truncate text-sm font-semibold text-white group-hover:text-race-bright">
+                          {e.title}
+                        </h3>
+                        <p className="mt-1 truncate text-xs text-zinc-500">
+                          {e.circuit} · {e.country}
                         </p>
-                      )}
-                      {live && <LiveBar className="mt-3" />}
-                    </div>
+                        {next && (
+                          <p className="mt-1.5 inline-flex items-center gap-1.5 text-xs text-zinc-400">
+                            <CalendarDays className="h-3 w-3 text-zinc-500" />
+                            {next.name} ·{" "}
+                            <LocalTime iso={next.startsAt} mode="weekday-time" className="text-race-bright" />
+                          </p>
+                        )}
+                        {live && <LiveBar className="mt-3" />}
+                      </div>
+                    </TiltCard>
                   </Link>
                 );
               })}
@@ -161,31 +164,35 @@ export default async function SeriesHubPage({
         <section className="container-site grid gap-4 sm:grid-cols-2">
           <Link
             href="/replays"
-            className="glass group flex items-center gap-5 p-6 transition-all hover:border-race/50 hover:shadow-glow-red"
+            className="block h-full rounded-card focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-race"
           >
-            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-race/15 text-race-bright">
-              <Film className="h-5 w-5" />
-            </span>
-            <div className="min-w-0 flex-1">
-              <h3 className="text-sm font-bold text-white">Full session replays</h3>
-              <p className="mt-0.5 text-xs text-zinc-400">
-                Every F1 session of the season — free with an account.
-              </p>
-            </div>
-            <ArrowRight className="h-4 w-4 shrink-0 text-zinc-500 transition group-hover:translate-x-1 group-hover:text-race-bright" />
+            <TiltCard maxTilt={5} className="flex h-full items-center gap-5 p-6">
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-race/15 text-race-bright">
+                <Film className="h-5 w-5" />
+              </span>
+              <div className="min-w-0 flex-1">
+                <h3 className="text-sm font-bold text-white">Full session replays</h3>
+                <p className="mt-0.5 text-xs text-zinc-400">
+                  Every F1 session of the season — free with an account.
+                </p>
+              </div>
+              <ArrowRight className="h-4 w-4 shrink-0 text-zinc-500 transition group-hover:translate-x-1 group-hover:text-race-bright" />
+            </TiltCard>
           </Link>
           <Link
             href="/standings"
-            className="glass group flex items-center gap-5 p-6 transition-all hover:border-race/50 hover:shadow-glow-red"
+            className="block h-full rounded-card focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-race"
           >
-            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-race/15 text-race-bright">
-              <Trophy className="h-5 w-5" />
-            </span>
-            <div className="min-w-0 flex-1">
-              <h3 className="text-sm font-bold text-white">Championship standings</h3>
-              <p className="mt-0.5 text-xs text-zinc-400">Drivers and constructors, updated all season.</p>
-            </div>
-            <ArrowRight className="h-4 w-4 shrink-0 text-zinc-500 transition group-hover:translate-x-1 group-hover:text-race-bright" />
+            <TiltCard maxTilt={5} className="flex h-full items-center gap-5 p-6">
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-race/15 text-race-bright">
+                <Trophy className="h-5 w-5" />
+              </span>
+              <div className="min-w-0 flex-1">
+                <h3 className="text-sm font-bold text-white">Championship standings</h3>
+                <p className="mt-0.5 text-xs text-zinc-400">Drivers and constructors, updated all season.</p>
+              </div>
+              <ArrowRight className="h-4 w-4 shrink-0 text-zinc-500 transition group-hover:translate-x-1 group-hover:text-race-bright" />
+            </TiltCard>
           </Link>
         </section>
       )}
@@ -215,31 +222,33 @@ export default async function SeriesHubPage({
                 key={n.id}
                 href={n.url}
                 target={n.isOriginal ? undefined : "_blank"}
-                className="glass group flex items-center gap-4 p-3 transition-all hover:border-race/50"
+                className="block rounded-card focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-race"
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={n.image || meta.poster}
-                  alt=""
-                  loading="lazy"
-                  className="h-16 w-28 shrink-0 rounded-xl object-cover"
-                />
-                <div className="min-w-0">
-                  <p className="line-clamp-2 text-sm font-semibold leading-snug text-white group-hover:text-race-bright">
-                    {n.title}
-                  </p>
-                  <p className="mt-1 inline-flex items-center gap-1.5 text-xs text-zinc-500">
-                    <Newspaper className="h-3 w-3" />
-                    {n.isOriginal ? (
-                      <span className="font-display text-[10px] uppercase tracking-widest text-race-bright">
-                        Rerace
-                      </span>
-                    ) : (
-                      n.source
-                    )}{" "}
-                    · <LocalTime iso={n.publishedAt} mode="relative" />
-                  </p>
-                </div>
+                <TiltCard maxTilt={4} className="flex items-center gap-4 p-3">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={n.image || meta.poster}
+                    alt=""
+                    loading="lazy"
+                    className="h-16 w-28 shrink-0 rounded-xl object-cover"
+                  />
+                  <div className="min-w-0">
+                    <p className="line-clamp-2 text-sm font-semibold leading-snug text-white group-hover:text-race-bright">
+                      {n.title}
+                    </p>
+                    <p className="mt-1 inline-flex items-center gap-1.5 text-xs text-zinc-500">
+                      <Newspaper className="h-3 w-3" />
+                      {n.isOriginal ? (
+                        <span className="font-display text-[10px] uppercase tracking-widest text-race-bright">
+                          Rerace
+                        </span>
+                      ) : (
+                        n.source
+                      )}{" "}
+                      · <LocalTime iso={n.publishedAt} mode="relative" />
+                    </p>
+                  </div>
+                </TiltCard>
               </Link>
             ))}
           </div>

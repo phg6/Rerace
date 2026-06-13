@@ -10,11 +10,13 @@ import { cn } from "@/lib/utils";
 export function TiltCard({
   children,
   className,
-  maxTilt = 5,
+  maxTilt = 8,
+  style,
 }: {
   children: React.ReactNode;
   className?: string;
   maxTilt?: number;
+  style?: React.CSSProperties;
 }) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -26,7 +28,7 @@ export function TiltCard({
       const rect = el.getBoundingClientRect();
       const px = (e.clientX - rect.left) / rect.width - 0.5;
       const py = (e.clientY - rect.top) / rect.height - 0.5;
-      el.style.transform = `perspective(900px) rotateX(${(-py * maxTilt).toFixed(2)}deg) rotateY(${(px * maxTilt).toFixed(2)}deg) scale3d(1.015, 1.015, 1)`;
+      el.style.transform = `perspective(900px) rotateX(${(-py * maxTilt).toFixed(2)}deg) rotateY(${(px * maxTilt).toFixed(2)}deg) scale3d(1.02, 1.02, 1)`;
     },
     [maxTilt]
   );
@@ -43,10 +45,10 @@ export function TiltCard({
       onMouseLeave={onLeave}
       className={cn(
         "glass group relative overflow-hidden transition-[box-shadow,border-color,transform] duration-300 will-change-transform",
-        "hover:border-race/50 hover:shadow-glow-red",
+        "hover:border-race/60 hover:shadow-[0_0_34px_-5px_rgba(225,6,0,0.65)]",
         className
       )}
-      style={{ transformStyle: "preserve-3d" }}
+      style={{ transformStyle: "preserve-3d", ...style }}
     >
       {children}
     </div>

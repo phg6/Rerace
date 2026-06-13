@@ -160,6 +160,8 @@ export interface User {
   collection: 'users';
 }
 /**
+ * F1 events are AUTO-GENERATED from the season calendar (ids like f1-2026-r10) — do not create them by hand. To attach streams or override fields on an auto event, create an event here with the SAME eventId; it overrides/extends the generated one. Other series are managed manually as before.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "events".
  */
@@ -167,7 +169,7 @@ export interface Event {
   id: number;
   title: string;
   /**
-   * Public id used in the /watch URL, e.g. f1-spain-2026
+   * Public id used in the /watch URL. Use the auto-generated F1 id (e.g. f1-2026-r10) to attach streams to a calendar event.
    */
   eventId: string;
   series: 'f1' | 'f2' | 'f3' | 'motogp' | 'nascar' | 'indycar' | 'wec' | 'wrc' | 'supercup' | 'general';
@@ -198,6 +200,11 @@ export interface Event {
         source: string;
         url: string;
         kind: 'iframe' | 'hls';
+        role: 'feed' | 'onboard';
+        /**
+         * Onboard cam driver name, e.g. Max Verstappen
+         */
+        driver?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -265,6 +272,15 @@ export interface NewsPost {
   series: 'f1' | 'f2' | 'f3' | 'motogp' | 'nascar' | 'indycar' | 'wec' | 'wrc' | 'supercup' | 'general';
   author?: string | null;
   publishedAt: string;
+  pinPriority?: boolean | null;
+  /**
+   * How long the pin lasts, in hours
+   */
+  pinHours?: number | null;
+  /**
+   * Set automatically when the pin is enabled
+   */
+  pinnedAt?: string | null;
   body?: {
     root: {
       type: string;
@@ -315,6 +331,10 @@ export interface Driver {
   country?: string | null;
   image?: string | null;
   bio?: string | null;
+  championships?: number | null;
+  careerWins?: number | null;
+  careerPodiums?: number | null;
+  careerPoles?: number | null;
   stats?:
     | {
         label: string;
@@ -339,6 +359,16 @@ export interface Team {
    */
   color?: string | null;
   base?: string | null;
+  /**
+   * Full entrant name, e.g. McLaren Mastercard Formula 1 Team
+   */
+  fullName?: string | null;
+  principal?: string | null;
+  engine?: string | null;
+  carName?: string | null;
+  championships?: number | null;
+  raceWins?: number | null;
+  firstEntry?: number | null;
   image?: string | null;
   bio?: string | null;
   updatedAt: string;
@@ -540,6 +570,8 @@ export interface EventsSelect<T extends boolean = true> {
         source?: T;
         url?: T;
         kind?: T;
+        role?: T;
+        driver?: T;
         id?: T;
       };
   updatedAt?: T;
@@ -594,6 +626,9 @@ export interface NewsPostsSelect<T extends boolean = true> {
   series?: T;
   author?: T;
   publishedAt?: T;
+  pinPriority?: T;
+  pinHours?: T;
+  pinnedAt?: T;
   body?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -628,6 +663,10 @@ export interface DriversSelect<T extends boolean = true> {
   country?: T;
   image?: T;
   bio?: T;
+  championships?: T;
+  careerWins?: T;
+  careerPodiums?: T;
+  careerPoles?: T;
   stats?:
     | T
     | {
@@ -648,6 +687,13 @@ export interface TeamsSelect<T extends boolean = true> {
   series?: T;
   color?: T;
   base?: T;
+  fullName?: T;
+  principal?: T;
+  engine?: T;
+  carName?: T;
+  championships?: T;
+  raceWins?: T;
+  firstEntry?: T;
   image?: T;
   bio?: T;
   updatedAt?: T;

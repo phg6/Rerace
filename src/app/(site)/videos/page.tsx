@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { getMedia } from "@/lib/data/content";
-import { MediaCard } from "@/components/MediaCard";
 import { SectionLabel } from "@/components/SectionLabel";
 import { EmptyState } from "@/components/EmptyState";
+import { VideoGrid, type VideoGridItem } from "./VideoGrid";
 
 export const revalidate = 300;
 
@@ -19,17 +19,26 @@ export const metadata: Metadata = {
 };
 
 export default async function VideosPage() {
-  const videos = await getMedia("video");
+  const media = await getMedia("video");
+  const videos: VideoGridItem[] = media.map((m) => ({
+    id: m.id,
+    title: m.title,
+    series: m.series,
+    image: m.image,
+    source: m.source,
+    durationMin: m.durationMin,
+    publishedAt: m.publishedAt,
+  }));
 
   return (
-    <div className="container-site py-12 sm:py-16">
+    <div className="container-site pb-20 pt-10">
       {/* ============ HEADER ============ */}
       <header className="max-w-3xl animate-rise">
-        <SectionLabel className="mb-3">Clips</SectionLabel>
-        <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl">Videos</h1>
-        <p className="mt-4 text-sm leading-relaxed text-zinc-400 sm:text-base">
+        <SectionLabel className="mb-2">Clips</SectionLabel>
+        <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">Videos</h1>
+        <p className="mt-2 text-sm leading-relaxed text-zinc-400">
           Onboards, overtakes, impossible saves and highlight reels from across the motorsport world —
-          free to watch, no account needed.
+          updated automatically, free to watch, no account needed.
         </p>
       </header>
 
@@ -43,19 +52,8 @@ export default async function VideosPage() {
           ctaLabel="Browse documentaries"
         />
       ) : (
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {videos.map((m) => (
-            <MediaCard
-              key={m.id}
-              href={`/videos/${m.id}`}
-              title={m.title}
-              series={m.series}
-              image={m.image}
-              meta={m.source ? `via ${m.source}` : undefined}
-              description={m.description}
-              durationMin={m.durationMin}
-            />
-          ))}
+        <div className="mt-12">
+          <VideoGrid videos={videos} />
         </div>
       )}
     </div>

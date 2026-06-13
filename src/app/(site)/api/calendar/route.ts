@@ -42,7 +42,7 @@ export async function GET(request: Request) {
   const eventId = searchParams.get("event");
   const sessionKey = searchParams.get("session");
 
-  const events = await getEvents();
+  const events = await getEvents({ all: true });
   const dtstamp = icsDate(new Date().toISOString());
 
   let eventLines: string[];

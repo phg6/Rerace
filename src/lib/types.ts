@@ -17,6 +17,10 @@ export interface StreamSource {
   source: string; // provider name shown to users
   url: string; // iframe embed URL or HLS manifest
   kind: "iframe" | "hls";
+  /** "feed" = commentary feed (default), "onboard" = driver onboard camera */
+  role?: "feed" | "onboard";
+  /** onboard cam driver name, e.g. "Max Verstappen" */
+  driver?: string;
 }
 
 export interface EventSession {
@@ -67,9 +71,12 @@ export interface MediaItem {
   year?: number;
   image?: string;
   url: string;
-  embedKind: "iframe" | "hls";
-  source?: string; // origin site for crawled videos
+  embedKind: "iframe" | "hls" | "youtube";
+  /** YouTube video id when embedKind === "youtube" */
+  videoId?: string;
+  source?: string; // origin site / channel for crawled videos
   durationMin?: number;
+  publishedAt?: string; // ISO, for crawled videos
   /** movies (and replays) require a signed-in, verified account */
   requiresAccount?: boolean;
 }
@@ -77,16 +84,22 @@ export interface MediaItem {
 export interface NewsArticle {
   id: string;
   title: string;
-  url: string; // external URL for crawled, internal /news/[slug] for originals
+  url: string; // internal: /news/[slug] for originals, /news/article/[id] for crawled
   slug?: string;
   source: string; // "Rerace" for originals
+  /** original external URL for crawled items (link out from the article page) */
+  sourceUrl?: string;
   isOriginal: boolean;
   image?: string;
   excerpt?: string;
+  /** sanitized full-article HTML for crawled items */
+  contentHtml?: string;
   series: SeriesKey;
   publishedAt: string;
   body?: unknown; // richtext for originals
   author?: string;
+  /** originals only: pinned to news slot #2 until this ISO timestamp */
+  pinnedUntil?: string;
 }
 
 export interface Poll {
@@ -128,6 +141,10 @@ export interface Driver {
   image?: string;
   bio?: string;
   stats?: { label: string; value: string }[];
+  championships?: number;
+  careerWins?: number;
+  careerPodiums?: number;
+  careerPoles?: number;
 }
 
 export interface Team {
@@ -139,6 +156,14 @@ export interface Team {
   base?: string;
   image?: string;
   bio?: string;
+  fullName?: string;
+  principal?: string;
+  engine?: string;
+  carName?: string;
+  championships?: number;
+  raceWins?: number;
+  firstEntry?: number;
+  driverSlugs?: string[];
 }
 
 export interface ResultRow {

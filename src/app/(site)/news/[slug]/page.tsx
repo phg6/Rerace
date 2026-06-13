@@ -9,6 +9,7 @@ import { seriesMeta } from "@/lib/series";
 import { SITE } from "@/lib/site";
 import { SeriesTag } from "@/components/SeriesTag";
 import { LocalTime } from "@/components/LocalTime";
+import { ReraceBadge } from "@/components/news/NewsList";
 
 export const revalidate = 300;
 
@@ -82,7 +83,10 @@ export default async function NewsArticlePage({ params }: Props) {
 
   return (
     <div className="container-site pb-20 pt-10">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+      />
       <article className="mx-auto max-w-3xl animate-rise">
         <Link href="/news" className="btn-ghost -ml-4 mb-8 text-xs">
           <ArrowLeft className="h-3.5 w-3.5" /> All news
@@ -91,9 +95,7 @@ export default async function NewsArticlePage({ params }: Props) {
         <header>
           <div className="mb-4 flex flex-wrap items-center gap-2">
             <SeriesTag series={post.series} />
-            <span className="font-display inline-flex items-center rounded-full bg-race px-2.5 py-0.5 text-[10px] uppercase tracking-[0.18em] text-white">
-              Rerace
-            </span>
+            <ReraceBadge />
           </div>
           <h1 className="text-balance text-3xl font-extrabold leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">
             {post.title}

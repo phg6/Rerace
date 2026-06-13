@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 };
 
 export default async function SchedulePage() {
-  const events = await getEvents();
+  const events = await getEvents({ all: true });
 
   const items: ScheduleItem[] = events
     .flatMap((e) =>
@@ -68,7 +68,10 @@ export default async function SchedulePage() {
 
   return (
     <div className="container-site space-y-8 pb-20 pt-10">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+      />
 
       <header>
         <SectionLabel className="mb-2">Calendar</SectionLabel>

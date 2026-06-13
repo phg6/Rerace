@@ -31,13 +31,23 @@ export function CommandMenu() {
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
+  const close = useCallback(() => {
+    setOpen(false);
+    setQuery("");
+    setHits([]);
+    setLoading(false);
+  }, []);
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
+        setQuery("");
+        setHits([]);
+        setLoading(false);
         setOpen((v) => !v);
       }
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape") close();
     };
     const onOpen = () => setOpen(true);
     window.addEventListener("keydown", onKey);
@@ -46,7 +56,7 @@ export function CommandMenu() {
       window.removeEventListener("keydown", onKey);
       window.removeEventListener("rerace:search", onOpen);
     };
-  }, []);
+  }, [close]);
 
   useEffect(() => {
     if (open) {
@@ -54,18 +64,13 @@ export function CommandMenu() {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
-      setQuery("");
-      setHits([]);
     }
   }, [open]);
 
   useEffect(() => {
-    if (!query.trim()) {
-      setHits([]);
-      return;
-    }
-    setLoading(true);
+    if (!query.trim()) return;
     const t = setTimeout(async () => {
+      setLoading(true);
       try {
         const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
         const body = await res.json();
@@ -82,11 +87,11 @@ export function CommandMenu() {
 
   const go = useCallback(
     (hit: Hit) => {
-      setOpen(false);
+      close();
       if (hit.href.startsWith("http")) window.open(hit.href, "_blank");
       else router.push(hit.href);
     },
-    [router]
+    [router, close]
   );
 
   if (!open) return null;
@@ -94,7 +99,7 @@ export function CommandMenu() {
   return (
     <div
       className="fixed inset-0 z-[100] flex items-start justify-center bg-black/60 px-4 pt-[12vh] backdrop-blur-sm"
-      onClick={() => setOpen(false)}
+      onClick={close}
       role="dialog"
       aria-modal="true"
       aria-label="Search"
@@ -112,7 +117,14 @@ export function CommandMenu() {
           <input
             ref={inputRef}
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => {
+              const v = e.target.value;
+              setQuery(v);
+              if (!v.trim()) {
+                setHits([]);
+                setLoading(false);
+              }
+            }}
             onKeyDown={(e) => {
               if (e.key === "ArrowDown") setActive((a) => Math.min(a + 1, hits.length - 1));
               if (e.key === "ArrowUp") setActive((a) => Math.max(a - 1, 0));

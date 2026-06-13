@@ -22,12 +22,12 @@ export default async function DocumentariesPage() {
   const docs = await getMedia("documentary");
 
   return (
-    <div className="container-site py-12 sm:py-16">
+    <div className="container-site pb-20 pt-10">
       {/* ============ HEADER ============ */}
       <header className="max-w-3xl animate-rise">
-        <SectionLabel className="mb-3">Watch</SectionLabel>
-        <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl">Documentaries</h1>
-        <p className="mt-4 text-sm leading-relaxed text-zinc-400 sm:text-base">
+        <SectionLabel className="mb-2">Watch</SectionLabel>
+        <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">Documentaries</h1>
+        <p className="mt-2 text-sm leading-relaxed text-zinc-400">
           Behind the visor: documentary series and films from every paddock we cover — free to watch,
           no account needed.
         </p>

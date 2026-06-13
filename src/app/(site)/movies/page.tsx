@@ -23,12 +23,12 @@ export default async function MoviesPage() {
   const movies = await getMedia("movie");
 
   return (
-    <div className="container-site py-12 sm:py-16">
+    <div className="container-site pb-20 pt-10">
       {/* ============ HEADER ============ */}
       <header className="max-w-3xl animate-rise">
-        <SectionLabel className="mb-3">Watch</SectionLabel>
-        <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl">Movies</h1>
-        <p className="mt-4 text-sm leading-relaxed text-zinc-400 sm:text-base">
+        <SectionLabel className="mb-2">Watch</SectionLabel>
+        <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">Movies</h1>
+        <p className="mt-2 text-sm leading-relaxed text-zinc-400">
           Racing on the silver screen — title fights, rivalries and 24-hour epics.
         </p>
         <p className="mt-3 inline-flex items-center gap-1.5 rounded-full border border-white/[0.1] bg-white/[0.05] px-3 py-1 text-xs text-zinc-400">
